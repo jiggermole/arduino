@@ -13,7 +13,7 @@
 /*
  * for my nixie clock display.  in the format yr/mo/dy  hr/min/sec
  * had a hell of a time getting spi to work so just used the shiftout 
- * using the max6322 io expander works pretty well.
+ * using the max6922 io expander works pretty well.
  * using a rotary encoder/button combo to change time
  * probably a lot can be done to optimize the code but its functional
  * thanks to buxtronix for the rotary library
@@ -23,7 +23,7 @@
  */
 
 RTC_DS3231 rtc;
-const int LOAD = 6;  //load pin on the max6322s chained to all chips
+const int LOAD = 6;  //load pin on the max6922s chained to all chips
 const int CLOCK = 12; //also to all chips
 const int DATA = 11;  //serial out to each chip.  each chip has a data out
 //that goes to the next in the chain
@@ -119,7 +119,7 @@ void loop() {
   }
 }
 
-void rotate() {  //IRQ for the encoder  Sets direction updates handled elsewhere
+void rotate() {  //IRQ for the encoder  Sets direction, updates handled elsewhere
   unsigned char result = rotary.process();
   if (result == DIR_CW) CW = 1;
   if (result == DIR_CCW) CCW = 1;
@@ -289,7 +289,7 @@ void RefreshDisplay(DateTime toupdate, int indextoblink){
     SendOutStuff(CD(DATE012), CD(DATE345), CD(TIME012), CD(TIME345));
 }
 /*
- * the display uses the max6322 and a zener clamp.  a logic high turns the 
+ * the display uses the max6922 and a zener clamp.  a logic high turns the 
  * digit off while a logic low turns it on so this is to set the 
  * appropriate digit to the correct logic level and pack it into 32 bits
  * to go out.  32 bits per chip 4 chips
